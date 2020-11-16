@@ -2,19 +2,28 @@ namespace test
 {
     public class ReserveSeatsHandler
     {
-        private readonly Screenings _screenings;
+        private readonly EventStore _eventStore;
 
-        public ReserveSeatsHandler(Screenings screenings)
+        public ReserveSeatsHandler(EventStore eventStore)
         {
-            _screenings = screenings;
+            _eventStore = eventStore;
         }
 
         public void Handle(ReserveSeatsCommand command)
         {
-            var screening = _screenings.Get(command.ScreeningId);
+            var screening = new Screening(_eventStore.EventsFor(command.ScreeningId));
 
             screening.Reserve(command.CustomerId, command.Seats);
-            _screenings.Save(screening);
+
+            SaveInEventStore(screening);
+        }
+
+        private void SaveInEventStore(EventSourcedAggregate screening)
+        {
+            foreach (var @event in screening.UnpublishedEvents)
+            {
+                _eventStore.Add(@event);
+            }
         }
     }
 }

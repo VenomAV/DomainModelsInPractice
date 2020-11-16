@@ -8,12 +8,12 @@ namespace test
         [Fact]
         public void AllSeatsAvailable()
         {
-            var screenings = new InMemoryScreenings();
-            var handler = new ReserveSeatsHandler(screenings);
+            var eventStore = new InMemoryEventStore();
+            var handler = new ReserveSeatsHandler(eventStore);
             var customerId = Guid.NewGuid();
             var screeningId = Guid.NewGuid();
 
-            screenings.Save(new Screening(
+            eventStore.Add(new ScreeningCreated(
                 screeningId,
                 new[]
                 {
@@ -34,7 +34,7 @@ namespace test
 
             handler.Handle(command);
 
-            var screening = screenings.Get(screeningId);
+            var screening = new Screening(eventStore.EventsFor(screeningId));
 
             Assert.Equal(customerId, screening.Seat(new SeatId("A", 1)).ReservedBy());
             Assert.Equal(customerId, screening.Seat(new SeatId("A", 2)).ReservedBy());
