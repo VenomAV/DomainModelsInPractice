@@ -129,7 +129,7 @@ namespace test
     public class InMemoryScreenings : Screenings
     {
         private readonly Dictionary<Guid, Screening> _screenings = new Dictionary<Guid, Screening>();
-        
+
         public Screening Get(Guid screeningId)
         {
             return _screenings[screeningId];
@@ -167,8 +167,7 @@ namespace test
         {
             foreach (var seatId in seatIds)
             {
-                var seat = Seats.First(x => x.Id.Equals(seatId));
-                seat.Reserve(customerId);
+                Seat(seatId).Reserve(customerId);
             }
         }
     }
