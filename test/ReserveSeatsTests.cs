@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace test
@@ -8,7 +10,7 @@ namespace test
         [Fact]
         public void AllSeatsAvailable()
         {
-            Screenings screenings = new InMemoryScreenings();
+            var screenings = new InMemoryScreenings();
             var handler = new ReserveSeatsHandler(screenings);
             var customerId = Guid.NewGuid();
             var screeningId = Guid.NewGuid();
@@ -36,63 +38,106 @@ namespace test
 
             var screening = screenings.Get(screeningId);
 
-            Assert.Equal(customerId, screening.Seat("A", 1).ReservedBy());
-            Assert.Equal(customerId, screening.Seat("A", 2).ReservedBy());
+            Assert.Equal(customerId, screening.Seat(new SeatId("A", 1)).ReservedBy());
+            Assert.Equal(customerId, screening.Seat(new SeatId("A", 2)).ReservedBy());
         }
     }
 
     public class SeatId
     {
+        public string Row { get; }
+        public int SeatNumber { get; }
+
         public SeatId(string row, int seatNumber)
         {
-            throw new NotImplementedException();
+            Row = row;
+            SeatNumber = seatNumber;
+        }
+
+        protected bool Equals(SeatId other)
+        {
+            return Row == other.Row && SeatNumber == other.SeatNumber;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SeatId) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Row, SeatNumber);
         }
     }
 
     public class ReserveSeatsCommand
     {
+        public Guid ScreeningId { get; }
+        public Guid CustomerId { get; }
+        public SeatId[] Seats { get; }
+
         public ReserveSeatsCommand(Guid screeningId, Guid customerId, SeatId[] seats)
         {
-            throw new NotImplementedException();
+            ScreeningId = screeningId;
+            CustomerId = customerId;
+            Seats = seats;
         }
     }
 
     public class Seat
     {
+        public SeatId Id { get; }
+        public Guid? Occupant { get; set; }
+
         public Seat(SeatId id)
         {
-            throw new NotImplementedException();
+            Id = id;
         }
 
-        public Guid ReservedBy()
+        public Guid? ReservedBy()
         {
-            throw new NotImplementedException();
+            return Occupant;
+        }
+
+        public void Reserve(Guid customerId)
+        {
+            Occupant = customerId;
         }
     }
 
     public class ReserveSeatsHandler
     {
+        private readonly Screenings _screenings;
+
         public ReserveSeatsHandler(Screenings screenings)
         {
-            throw new NotImplementedException();
+            _screenings = screenings;
         }
 
         public void Handle(ReserveSeatsCommand command)
         {
-            throw new NotImplementedException();
+            var screening = _screenings.Get(command.ScreeningId);
+
+            screening.Reserve(command.CustomerId, command.Seats);
+            _screenings.Save(screening);
         }
     }
 
     public class InMemoryScreenings : Screenings
     {
+        private readonly Dictionary<Guid, Screening> _screenings = new Dictionary<Guid, Screening>();
+        
         public Screening Get(Guid screeningId)
         {
-            throw new NotImplementedException();
+            return _screenings[screeningId];
         }
 
         public void Save(Screening screening)
         {
-            throw new NotImplementedException();
+            _screenings[screening.Id] = screening;
         }
     }
 
@@ -104,14 +149,27 @@ namespace test
 
     public class Screening
     {
-        public Screening(Guid screeningId, Seat[] seats)
+        public Guid Id { get; }
+        public Seat[] Seats { get; }
+
+        public Screening(Guid id, Seat[] seats)
         {
-            throw new NotImplementedException();
+            Id = id;
+            Seats = seats;
         }
 
-        public Seat Seat(string row, int seatNumber)
+        public Seat Seat(SeatId seatId)
         {
-            throw new NotImplementedException();
+            return Seats.First(x => x.Id.Equals(seatId));
+        }
+
+        public void Reserve(Guid customerId, SeatId[] seatIds)
+        {
+            foreach (var seatId in seatIds)
+            {
+                var seat = Seats.First(x => x.Id.Equals(seatId));
+                seat.Reserve(customerId);
+            }
         }
     }
 }
