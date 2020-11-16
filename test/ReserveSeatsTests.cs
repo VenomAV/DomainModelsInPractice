@@ -17,10 +17,10 @@ namespace test
                 screeningId,
                 new[]
                 {
-                    new Seat(new SeatId("A", 1)),
-                    new Seat(new SeatId("A", 2)),
-                    new Seat(new SeatId("A", 3)),
-                    new Seat(new SeatId("A", 4)),
+                    new SeatId("A", 1),
+                    new SeatId("A", 2),
+                    new SeatId("A", 3),
+                    new SeatId("A", 4),
                 }));
             When(new ReserveSeatsCommand(
                 screeningId,
@@ -37,7 +37,7 @@ namespace test
             }));
         }
 
-        public void Given(params Event[] events)
+        private void Given(params Event[] events)
         {
             foreach (var @event in events)
             {

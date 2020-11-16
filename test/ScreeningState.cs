@@ -37,7 +37,7 @@ namespace test
         private void Apply(ScreeningCreated screeningCreated)
         {
             Id = screeningCreated.ScreeningId;
-            Seats = screeningCreated.Seats;
+            Seats = screeningCreated.Seats.Select(id => new Seat(id)).ToArray();
         }
 
         private void Apply(SeatsReserved seatsReserved)
