@@ -1,62 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace test
 {
-    public class Screening : EventSourcedAggregate
+    public class Screening
     {
-        private Guid Id { get; set; }
-        private Seat[] Seats { get; set; }
-        private readonly List<Event> _unpublishedEvents = new List<Event>();
+        private ScreeningState _screening;
+        private readonly Action<Event> _publish;
 
-        public Screening(Event[] events)
+        public Screening(ScreeningState state, Action<Event> publish)
         {
-            foreach (var @event in events)
-            {
-                Apply(@event);
-            }
-        }
-
-        public Seat Seat(SeatId seatId)
-        {
-            return Seats.First(x => x.Id.Equals(seatId));
+            _screening = state;
+            _publish = publish;
         }
 
         public void Reserve(Guid customerId, SeatId[] seatIds)
         {
-            var seatReserved = new SeatsReserved(Id, customerId, seatIds);
-            Apply(seatReserved);
-            _unpublishedEvents.Add(seatReserved);
+            _publish(new SeatsReserved(_screening.Id, customerId, seatIds));
         }
-
-        private void Apply(Event @event)
-        {
-            switch (@event)
-            {
-                case ScreeningCreated sc:
-                    Apply(sc);
-                    break;
-                case SeatsReserved sr:
-                    Apply(sr);
-                    break;
-            }
-        }
-
-        private void Apply(ScreeningCreated screeningCreated)
-        {
-            Id = screeningCreated.ScreeningId;
-            Seats = screeningCreated.Seats;
-        }
-
-        private void Apply(SeatsReserved seatsReserved)
-        {
-            foreach (var seatId in seatsReserved.SeatIds)
-            {
-                Seat(seatId).Reserve(seatsReserved.CustomerId);
-            }
-        }
-
-        public IEnumerable<Event> UnpublishedEvents => _unpublishedEvents;
     }
 }

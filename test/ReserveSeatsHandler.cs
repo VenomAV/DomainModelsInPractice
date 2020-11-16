@@ -11,19 +11,14 @@ namespace test
 
         public void Handle(ReserveSeatsCommand command)
         {
-            var screening = new Screening(_eventStore.EventsFor(command.ScreeningId));
+            var state = new ScreeningState(_eventStore.EventsFor(command.ScreeningId));
+            var screening = new Screening(state, @event =>
+            {
+                state.Apply(@event);
+                _eventStore.Add(@event);
+            });
 
             screening.Reserve(command.CustomerId, command.Seats);
-
-            SaveInEventStore(screening);
-        }
-
-        private void SaveInEventStore(EventSourcedAggregate screening)
-        {
-            foreach (var @event in screening.UnpublishedEvents)
-            {
-                _eventStore.Add(@event);
-            }
         }
     }
 }

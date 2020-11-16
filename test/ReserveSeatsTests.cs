@@ -34,7 +34,7 @@ namespace test
 
             handler.Handle(command);
 
-            var screening = new Screening(eventStore.EventsFor(screeningId));
+            var screening = new ScreeningState(eventStore.EventsFor(screeningId));
 
             Assert.Equal(customerId, screening.Seat(new SeatId("A", 1)).ReservedBy());
             Assert.Equal(customerId, screening.Seat(new SeatId("A", 2)).ReservedBy());
