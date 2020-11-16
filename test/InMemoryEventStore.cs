@@ -6,7 +6,7 @@ namespace test
 {
     public class InMemoryEventStore : EventStore
     {
-        private List<Event> _events = new List<Event>();
+        private readonly List<Event> _events = new List<Event>();
         
         public Event[] EventsFor(Guid streamId)
         {

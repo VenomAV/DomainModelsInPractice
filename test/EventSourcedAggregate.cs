@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace test
 {
     public interface EventSourcedAggregate
     {
-        Event[] UnpublishedEvents { get; }
+        IEnumerable<Event> UnpublishedEvents { get; }
     }
 }

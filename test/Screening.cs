@@ -6,10 +6,9 @@ namespace test
 {
     public class Screening : EventSourcedAggregate
     {
-        public Guid Id { get; private set; }
-        public Seat[] Seats { get; private set; }
-
-        public List<Event> _unpublishedEvent = new List<Event>();
+        private Guid Id { get; set; }
+        private Seat[] Seats { get; set; }
+        private readonly List<Event> _unpublishedEvents = new List<Event>();
 
         public Screening(Event[] events)
         {
@@ -28,7 +27,7 @@ namespace test
         {
             var seatReserved = new SeatsReserved(Id, customerId, seatIds);
             Apply(seatReserved);
-            _unpublishedEvent.Add(seatReserved);
+            _unpublishedEvents.Add(seatReserved);
         }
 
         private void Apply(Event @event)
@@ -58,6 +57,6 @@ namespace test
             }
         }
 
-        public Event[] UnpublishedEvents => _unpublishedEvent.ToArray();
+        public IEnumerable<Event> UnpublishedEvents => _unpublishedEvents;
     }
 }
