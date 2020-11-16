@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace test
 {
@@ -16,5 +17,30 @@ namespace test
         }
 
         public Guid StreamId => ScreeningId;
+
+        protected bool Equals(SeatsReserved other)
+        {
+            return ScreeningId.Equals(other.ScreeningId) && 
+                   CustomerId.Equals(other.CustomerId) &&
+                   SeatIds.SequenceEqual(other.SeatIds);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((SeatsReserved) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                ScreeningId,
+                CustomerId,
+                SeatIds
+                    .Select(x => x.GetHashCode())
+                    .Aggregate(HashCode.Combine));
+        }
     }
 }
