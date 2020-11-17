@@ -44,6 +44,45 @@ namespace test
             }));
         }
 
+        [Fact]
+        public void SomeSeatsNotAvailable()
+        {
+            var customerId = Guid.NewGuid();
+            var screeningId = Guid.NewGuid();
+
+            Given(new ScreeningCreated(
+                    screeningId,
+                    new[]
+                    {
+                        new SeatId("A", 1),
+                        new SeatId("A", 2),
+                        new SeatId("A", 3),
+                        new SeatId("A", 4),
+                    }),
+                new SeatsReserved(
+                    screeningId,
+                    Guid.NewGuid(),
+                    new[]
+                    {
+                        new SeatId("A", 1)
+                    }));
+            When(new ReserveSeatsCommand(
+                screeningId,
+                customerId,
+                new[]
+                {
+                    new SeatId("A", 1),
+                    new SeatId("A", 2)
+                }));
+            Then(new SeatsReservationFailed(
+                screeningId,
+                customerId,
+                new[]
+                {
+                    new SeatId("A", 1)
+                }));
+        }
+
         private void Given(params Event[] events)
         {
             _initialEvents = events;
