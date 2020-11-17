@@ -1,12 +1,16 @@
+using System;
+
 namespace test
 {
     public class ReserveSeatsHandler
     {
         private readonly EventStore _eventStore;
+        private readonly Action<Event> _publish;
 
-        public ReserveSeatsHandler(EventStore eventStore)
+        public ReserveSeatsHandler(EventStore eventStore, Action<Event> publish)
         {
             _eventStore = eventStore;
+            _publish = publish;
         }
 
         public void Handle(ReserveSeatsCommand command)
@@ -15,7 +19,7 @@ namespace test
             var screening = new Screening(state, @event =>
             {
                 state.Apply(@event);
-                _eventStore.Add(@event);
+                _publish(@event);
             });
 
             screening.Reserve(command.CustomerId, command.Seats);

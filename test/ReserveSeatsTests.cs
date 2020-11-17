@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace test
 {
     public class ReserveSeatsTests
     {
-        private readonly InMemoryEventStore _eventStore = new InMemoryEventStore();
+        private readonly List<Event> _publishedEvent = new List<Event>();
+        private Event[] _initialEvents = new Event[0];
 
         [Fact]
         public void AllSeatsAvailable()
@@ -39,24 +41,20 @@ namespace test
 
         private void Given(params Event[] events)
         {
-            foreach (var @event in events)
-            {
-                _eventStore.Add(@event);
-            }
+            _initialEvents = events;
         }
 
         private void When(ReserveSeatsCommand command)
         {
-            var handler = new ReserveSeatsHandler(_eventStore);
+            var handler = new ReserveSeatsHandler(
+                new InMemoryEventStore(_initialEvents),
+                e => _publishedEvent.Add(e));
             handler.Handle(command);
         }
 
         private void Then(params Event[] events)
         {
-            foreach (var @event in events)
-            {
-                Assert.Contains(@event, _eventStore.Events);
-            }
+            Assert.Equal(events, _publishedEvent);
         }
     }
 }

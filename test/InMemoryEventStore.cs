@@ -6,16 +6,16 @@ namespace test
 {
     public class InMemoryEventStore : EventStore
     {
-        public readonly List<Event> Events = new List<Event>();
-        
-        public Event[] EventsFor(Guid streamId)
+        private readonly List<Event> _events;
+
+        public InMemoryEventStore(Event[] events)
         {
-            return Events.Where(x => x.StreamId == streamId).ToArray();
+            _events = events.ToList();
         }
 
-        public void Add(Event @event)
+        public Event[] EventsFor(Guid streamId)
         {
-            Events.Add(@event);
+            return _events.Where(x => x.StreamId == streamId).ToArray();
         }
     }
 }
