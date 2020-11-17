@@ -16,13 +16,15 @@ namespace test
         public void Handle(ReserveSeatsCommand command)
         {
             var state = new ScreeningState(_eventStore.EventsFor(command.ScreeningId));
-            var screening = new Screening(state, @event =>
-            {
-                state.Apply(@event);
-                _publish(@event);
-            });
+            var screening = new Screening(state, PublishWith(state));
 
             screening.Reserve(command.CustomerId, command.Seats);
         }
+
+        Action<Event> PublishWith(ScreeningState state) => (Event @event) =>
+        {
+            state.Apply(@event);
+            _publish(@event);
+        };
     }
 }
