@@ -1,6 +1,6 @@
 using System;
 
-namespace test
+namespace app.domain
 {
     public interface Event
     {

@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
+using app.domain.screening.events;
 
-namespace test
+namespace app.domain.screening
 {
     public class ScreeningState
     {

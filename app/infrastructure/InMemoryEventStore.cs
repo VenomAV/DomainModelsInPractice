@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using app.domain;
 
-namespace test
+namespace app.infrastructure
 {
     public class InMemoryEventStore : EventStore
     {

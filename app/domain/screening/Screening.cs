@@ -1,6 +1,7 @@
 using System;
+using app.domain.screening.events;
 
-namespace test
+namespace app.domain.screening
 {
     public class Screening
     {

@@ -1,5 +1,10 @@
 using System;
 using System.Collections.Generic;
+using app.domain;
+using app.domain.screening;
+using app.domain.screening.commands;
+using app.domain.screening.events;
+using app.infrastructure;
 using Xunit;
 
 namespace test

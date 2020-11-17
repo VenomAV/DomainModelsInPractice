@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace test
+namespace app.domain.screening.events
 {
     public class SeatsReserved : Event
     {
