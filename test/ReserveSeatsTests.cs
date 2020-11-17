@@ -19,9 +19,11 @@ namespace test
         {
             var customerId = Guid.NewGuid();
             var screeningId = Guid.NewGuid();
+            var farEnoughStartTime = DateTime.Now.AddDays(1);
 
             Given(new ScreeningCreated(
                 screeningId,
+                farEnoughStartTime,
                 new[]
                 {
                     new SeatId("A", 1),
@@ -49,9 +51,11 @@ namespace test
         {
             var customerId = Guid.NewGuid();
             var screeningId = Guid.NewGuid();
+            var farEnoughStartTime = DateTime.Now.AddDays(1);
 
             Given(new ScreeningCreated(
                     screeningId,
+                    farEnoughStartTime,
                     new[]
                     {
                         new SeatId("A", 1),
@@ -80,6 +84,41 @@ namespace test
                 new[]
                 {
                     new SeatId("A", 1)
+                }));
+        }
+
+        [Fact]
+        public void LessThan15MinutesBeforeScreeningTime()
+        {
+            var customerId = Guid.NewGuid();
+            var screeningId = Guid.NewGuid();
+            var tooNearStartTime = DateTime.Now.AddMinutes(10);
+
+            Given(new ScreeningCreated(
+                screeningId,
+                tooNearStartTime,
+                new[]
+                {
+                    new SeatId("A", 1),
+                    new SeatId("A", 2),
+                    new SeatId("A", 3),
+                    new SeatId("A", 4),
+                }));
+            When(new ReserveSeatsCommand(
+                screeningId,
+                customerId,
+                new[]
+                {
+                    new SeatId("A", 1),
+                    new SeatId("A", 2)
+                }));
+            Then(new SeatsReservationRequestedTooLate(
+                screeningId,
+                customerId,
+                new[]
+                {
+                    new SeatId("A", 1),
+                    new SeatId("A", 2)
                 }));
         }
 

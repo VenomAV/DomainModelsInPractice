@@ -6,8 +6,9 @@ namespace app.domain.screening
 {
     public class ScreeningState
     {
-        public Guid Id { get; set; }
-        public Seat[] Seats { get; set; }
+        public Guid Id { get; private set; }
+        public Seat[] Seats { get; private set; }
+        public DateTime StartTime { get; private set; }
 
         public ScreeningState(Event[] events)
         {
@@ -39,8 +40,9 @@ namespace app.domain.screening
         {
             Id = screeningCreated.ScreeningId;
             Seats = screeningCreated.Seats.Select(id => new Seat(id)).ToArray();
+            StartTime = screeningCreated.StartTime;
         }
-
+        
         private void Apply(SeatsReserved seatsReserved)
         {
             foreach (var seatId in seatsReserved.SeatIds)

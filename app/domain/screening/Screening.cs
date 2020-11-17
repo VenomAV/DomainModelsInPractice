@@ -22,8 +22,10 @@ namespace app.domain.screening
                 .Where(seat => seat.Occupant.HasValue)
                 .Select(x => x.Id)
                 .ToArray();
-            
-            if (alreadyReservedSeats.Any())
+
+            if ( _screening.StartTime - DateTime.Now <= TimeSpan.FromMinutes(15))
+                _publish(new SeatsReservationRequestedTooLate(_screening.Id, customerId, seatIds));
+            else if (alreadyReservedSeats.Any())
                 _publish(new SeatsReservationFailed(_screening.Id, customerId, alreadyReservedSeats));
             else
                 _publish(new SeatsReserved(_screening.Id, customerId, seatIds));
