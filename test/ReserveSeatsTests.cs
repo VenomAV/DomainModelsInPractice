@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using app.domain;
 using app.domain.screening;
 using app.domain.screening.commands;
 using app.domain.screening.events;
@@ -9,11 +7,8 @@ using Xunit;
 
 namespace test
 {
-    public class ReserveSeatsTests
+    public class ReserveSeatsTests : AcceptanceTestBase
     {
-        private readonly List<Event> _publishedEvent = new List<Event>();
-        private Event[] _initialEvents = new Event[0];
-
         [Fact]
         public void AllSeatsAvailable()
         {
@@ -122,22 +117,10 @@ namespace test
                 }));
         }
 
-        private void Given(params Event[] events)
-        {
-            _initialEvents = events;
-        }
-
         private void When(ReserveSeatsCommand command)
         {
-            var handler = new ReserveSeatsHandler(
-                new InMemoryEventStore(_initialEvents),
-                e => _publishedEvent.Add(e));
+            var handler = new ReserveSeatsHandler(new InMemoryEventStore(History), Published);
             handler.Handle(command);
-        }
-
-        private void Then(params Event[] events)
-        {
-            Assert.Equal(events, _publishedEvent);
         }
     }
 }

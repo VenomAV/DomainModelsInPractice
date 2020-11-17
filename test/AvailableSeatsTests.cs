@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using app.domain;
 using app.domain.screening;
 using app.domain.screening.events;
 using app.domain.screening.queries;
@@ -8,11 +6,8 @@ using Xunit;
 
 namespace test
 {
-    public class AvailableSeatsTests
+    public class AvailableSeatsTests : AcceptanceTestBase
     {
-        private Event[] _history = new Event[0];
-        private readonly List<object> _receivedResponses = new List<object>();
-
         [Fact]
         public void AllSeatsAvailable()
         {
@@ -48,22 +43,12 @@ namespace test
             }));
         }
 
-        private void Given(params Event[] events)
-        {
-            _history = events;
-        }
-
         private void Query(AvailableSeats query)
         {
-            var readModel = new AvailableSeatsReadModel(_history);
-            var handler = new AvailableSeatsQueryHandler(readModel, response => _receivedResponses.Add(response));
+            var readModel = new AvailableSeatsReadModel(History);
+            var handler = new AvailableSeatsQueryHandler(readModel, Respond);
 
             handler.Handle(query);
-        }
-
-        private void ThenExpectResponses(params object[] responses)
-        {
-            Assert.Equal(responses, _receivedResponses);
         }
     }
 }
