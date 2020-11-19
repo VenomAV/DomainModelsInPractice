@@ -31,6 +31,7 @@ namespace test
         protected void Published(Event @event)
         {
             _publishedEvent.Add(@event);
+            EventStore.Add(@event);
             NotifyReadModels(@event);
         }
 

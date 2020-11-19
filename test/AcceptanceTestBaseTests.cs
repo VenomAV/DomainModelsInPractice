@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using app.domain;
 using Xunit;
 
@@ -60,6 +61,22 @@ namespace test
             WhenQuery(query);
 
             Assert.Equal(new[] {query}, handler.ReceivedMessages);
+        }
+
+        [Fact]
+        public void EventStoreGetsNewEvents()
+        {
+            var history = new Event[]
+            {
+                new FakeEvent(Guid.NewGuid(), "First"),
+                new FakeEvent(Guid.NewGuid(), "Second"),
+            };
+            var newEvent = new FakeEvent(Guid.NewGuid(), "Any");
+            Given(history);
+
+            Published(newEvent);
+
+            Assert.Equal(history.Concat(new []{newEvent}).ToArray(), EventStore.History);
         }
 
         private class SpyReadModel : ReadModel

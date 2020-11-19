@@ -26,5 +26,7 @@ namespace app.infrastructure
             _events.Clear();
             _events.AddRange(history);
         }
+
+        public void Add(Event @event) => _events.Add(@event);
     }
 }
