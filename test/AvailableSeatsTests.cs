@@ -45,7 +45,7 @@ namespace test
 
         private void Query(AvailableSeats query)
         {
-            var readModel = new AvailableSeatsReadModel(History);
+            var readModel = new AvailableSeatsReadModel(EventStore);
             var handler = new AvailableSeatsQueryHandler(readModel, Respond);
 
             handler.Handle(query);

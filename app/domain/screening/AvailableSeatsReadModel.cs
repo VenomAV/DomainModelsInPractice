@@ -5,16 +5,14 @@ using app.domain.screening.events;
 
 namespace app.domain.screening
 {
-    public class AvailableSeatsReadModel
+    public class AvailableSeatsReadModel : ReadModel
     {
         private readonly Dictionary<Guid, SeatId[]> _availableSeatsByScreeningId = new Dictionary<Guid, SeatId[]>();
 
-        public AvailableSeatsReadModel(Event[] history)
+        public AvailableSeatsReadModel(EventStore eventStore)
         {
-            foreach (var @event in history)
-            {
+            foreach (var @event in eventStore.History)
                 Apply(@event);
-            }
         }
 
         public void OnEvent(Event @event)

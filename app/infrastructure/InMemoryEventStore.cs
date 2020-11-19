@@ -14,9 +14,17 @@ namespace app.infrastructure
             _events = events.ToList();
         }
 
+        public IEnumerable<Event> History => _events;
+
         public Event[] EventsFor(Guid streamId)
         {
             return _events.Where(x => x.StreamId == streamId).ToArray();
+        }
+
+        public void Reset(IEnumerable<Event> history)
+        {
+            _events.Clear();
+            _events.AddRange(history);
         }
     }
 }

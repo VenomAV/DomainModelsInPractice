@@ -119,7 +119,7 @@ namespace test
 
         private void When(ReserveSeatsCommand command)
         {
-            var handler = new ReserveSeatsHandler(new InMemoryEventStore(History), Published);
+            var handler = new ReserveSeatsHandler(EventStore, Published);
             handler.Handle(command);
         }
     }
