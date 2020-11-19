@@ -2,13 +2,17 @@ using System;
 using app.domain.screening;
 using app.domain.screening.commands;
 using app.domain.screening.events;
-using app.infrastructure;
 using Xunit;
 
 namespace test
 {
     public class ReserveSeatsTests : AcceptanceTestBase
     {
+        public ReserveSeatsTests()
+        {
+            Register(new ReserveSeatsHandler(EventStore, Published));
+        }
+        
         [Fact]
         public void AllSeatsAvailable()
         {
@@ -115,12 +119,6 @@ namespace test
                     new SeatId("A", 1),
                     new SeatId("A", 2)
                 }));
-        }
-
-        private void When(ReserveSeatsCommand command)
-        {
-            var handler = new ReserveSeatsHandler(EventStore, Published);
-            handler.Handle(command);
         }
     }
 }

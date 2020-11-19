@@ -22,15 +22,9 @@ namespace test
                 NotifyReadModels(@event);
         }
 
-        protected void Then(params Event[] events)
-        {
-            Assert.Equal(events, _publishedEvent);
-        }
+        protected void Then(params Event[] events) => Assert.Equal(events, _publishedEvent);
 
-        protected void ThenExpectResponses(params object[] responses)
-        {
-            Assert.Equal(responses, _receivedResponses);
-        }
+        protected void ThenExpectResponses(params object[] responses) => Assert.Equal(responses, _receivedResponses);
 
         protected void Respond(object response) => _receivedResponses.Add(response);
 
@@ -51,6 +45,7 @@ namespace test
         protected void Register<TMsg>(Handler<TMsg> handler) => _handlers[typeof(TMsg)] = handler;
 
         protected void Query<TMsg>(TMsg query) => CallHandlerFor(query);
+        protected void When<TMsg>(TMsg query) => CallHandlerFor(query);
 
         private void CallHandlerFor<TMsg>(TMsg message)
         {

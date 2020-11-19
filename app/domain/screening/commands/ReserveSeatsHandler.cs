@@ -2,7 +2,7 @@ using System;
 
 namespace app.domain.screening.commands
 {
-    public class ReserveSeatsHandler
+    public class ReserveSeatsHandler : Handler<ReserveSeatsCommand>
     {
         private readonly EventStore _eventStore;
         private readonly Action<Event> _publish;
