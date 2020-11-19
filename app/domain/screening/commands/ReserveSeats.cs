@@ -2,13 +2,13 @@ using System;
 
 namespace app.domain.screening.commands
 {
-    public class ReserveSeatsCommand
+    public class ReserveSeats
     {
         public Guid ScreeningId { get; }
         public Guid CustomerId { get; }
         public SeatId[] Seats { get; }
 
-        public ReserveSeatsCommand(Guid screeningId, Guid customerId, SeatId[] seats)
+        public ReserveSeats(Guid screeningId, Guid customerId, SeatId[] seats)
         {
             ScreeningId = screeningId;
             CustomerId = customerId;

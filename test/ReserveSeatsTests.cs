@@ -30,7 +30,7 @@ namespace test
                     new SeatId("A", 3),
                     new SeatId("A", 4),
                 }));
-            When(new ReserveSeatsCommand(
+            When(new ReserveSeats(
                 screeningId,
                 customerId,
                 new[]
@@ -69,7 +69,7 @@ namespace test
                     {
                         new SeatId("A", 1)
                     }));
-            When(new ReserveSeatsCommand(
+            When(new ReserveSeats(
                 screeningId,
                 customerId,
                 new[]
@@ -103,7 +103,7 @@ namespace test
                     new SeatId("A", 3),
                     new SeatId("A", 4),
                 }));
-            When(new ReserveSeatsCommand(
+            When(new ReserveSeats(
                 screeningId,
                 customerId,
                 new[]
