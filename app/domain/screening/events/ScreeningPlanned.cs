@@ -3,21 +3,21 @@ using System.Linq;
 
 namespace app.domain.screening.events
 {
-    public class ScreeningCreated : Event
+    public class ScreeningPlanned : Event
     {
         public Guid ScreeningId { get; }
         public DateTime StartTime { get; }
         public SeatId[] Seats { get; }
         public Guid StreamId => ScreeningId;
 
-        public ScreeningCreated(Guid screeningId, DateTime startTime, SeatId[] seats)
+        public ScreeningPlanned(Guid screeningId, DateTime startTime, SeatId[] seats)
         {
             ScreeningId = screeningId;
             StartTime = startTime;
             Seats = seats;
         }
 
-        protected bool Equals(ScreeningCreated other)
+        protected bool Equals(ScreeningPlanned other)
         {
             return ScreeningId.Equals(other.ScreeningId) && Seats.SequenceEqual(other.Seats);
         }
@@ -27,7 +27,7 @@ namespace app.domain.screening.events
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ScreeningCreated) obj);
+            return Equals((ScreeningPlanned) obj);
         }
 
         public override int GetHashCode()

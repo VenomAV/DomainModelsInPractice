@@ -20,7 +20,7 @@ namespace test
             var screeningId = Guid.NewGuid();
             var farEnoughStartTime = DateTime.Now.AddDays(1);
 
-            Given(new ScreeningCreated(
+            Given(new ScreeningPlanned(
                 screeningId,
                 farEnoughStartTime,
                 new[]
@@ -52,7 +52,7 @@ namespace test
             var screeningId = Guid.NewGuid();
             var farEnoughStartTime = DateTime.Now.AddDays(1);
 
-            Given(new ScreeningCreated(
+            Given(new ScreeningPlanned(
                     screeningId,
                     farEnoughStartTime,
                     new[]
@@ -93,7 +93,7 @@ namespace test
             var screeningId = Guid.NewGuid();
             var tooNearStartTime = DateTime.Now.AddMinutes(10);
 
-            Given(new ScreeningCreated(
+            Given(new ScreeningPlanned(
                 screeningId,
                 tooNearStartTime,
                 new[]

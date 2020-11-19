@@ -31,7 +31,7 @@ namespace app.domain.screening
         {
             switch (@event)
             {
-                case ScreeningCreated sc:
+                case ScreeningPlanned sc:
                     Apply(sc);
                     break;
                 case SeatsReserved sr:
@@ -40,7 +40,7 @@ namespace app.domain.screening
             }
         }
 
-        private void Apply(ScreeningCreated @event)
+        private void Apply(ScreeningPlanned @event)
         {
             _availableSeatsByScreeningId.Add(@event.ScreeningId, @event.Seats);
         }

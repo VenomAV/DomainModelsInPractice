@@ -21,7 +21,7 @@ namespace test
             var screeningId = Guid.NewGuid();
             var farEnoughStartTime = DateTime.Now.AddDays(1);
 
-            Given(new ScreeningCreated(
+            Given(new ScreeningPlanned(
                     screeningId,
                     farEnoughStartTime,
                     new[]

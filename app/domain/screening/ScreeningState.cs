@@ -22,7 +22,7 @@ namespace app.domain.screening
         {
             switch (@event)
             {
-                case ScreeningCreated sc:
+                case ScreeningPlanned sc:
                     Apply(sc);
                     break;
                 case SeatsReserved sr:
@@ -36,11 +36,11 @@ namespace app.domain.screening
             return Seats.First(x => x.Id.Equals(seatId));
         }
 
-        private void Apply(ScreeningCreated screeningCreated)
+        private void Apply(ScreeningPlanned screeningPlanned)
         {
-            Id = screeningCreated.ScreeningId;
-            Seats = screeningCreated.Seats.Select(id => new Seat(id)).ToArray();
-            StartTime = screeningCreated.StartTime;
+            Id = screeningPlanned.ScreeningId;
+            Seats = screeningPlanned.Seats.Select(id => new Seat(id)).ToArray();
+            StartTime = screeningPlanned.StartTime;
         }
         
         private void Apply(SeatsReserved seatsReserved)
