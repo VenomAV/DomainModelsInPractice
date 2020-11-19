@@ -46,7 +46,7 @@ namespace test
                 readModel.OnEvent(@event);
         }
 
-        protected void RegisterReadModel(ReadModel readModel) => _readModels.Add(readModel);
+        protected void Register(ReadModel readModel) => _readModels.Add(readModel);
 
         protected void Register<TMsg>(Handler<TMsg> handler) => _handlers[typeof(TMsg)] = handler;
 

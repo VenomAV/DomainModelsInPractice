@@ -8,13 +8,11 @@ namespace test
 {
     public class AvailableSeatsTests : AcceptanceTestBase
     {
-        private readonly AvailableSeatsReadModel _readModel;
-
         public AvailableSeatsTests()
         {
-            _readModel = new AvailableSeatsReadModel(EventStore);
-            RegisterReadModel(_readModel);
-            Register(new AvailableSeatsQueryHandler(_readModel, Respond));
+            var readModel = new AvailableSeatsReadModel(EventStore);
+            Register(readModel);
+            Register(new AvailableSeatsQueryHandler(readModel, Respond));
         }
         
         [Fact]

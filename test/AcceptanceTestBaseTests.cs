@@ -30,7 +30,7 @@ namespace test
                 new FakeEvent(Guid.NewGuid(), "First"),
                 new FakeEvent(Guid.NewGuid(), "Second"),
             };
-            RegisterReadModel(readModel);
+            Register(readModel);
 
             Given(history);
 
@@ -42,7 +42,7 @@ namespace test
         {
             var readModel = new SpyReadModel();
             var newEvent = new FakeEvent(Guid.NewGuid(), "Any");
-            RegisterReadModel(readModel);
+            Register(readModel);
             Given();
 
             Published(newEvent);
