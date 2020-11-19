@@ -14,6 +14,7 @@ namespace test
         {
             _readModel = new AvailableSeatsReadModel(EventStore);
             RegisterReadModel(_readModel);
+            Register(new AvailableSeatsQueryHandler(_readModel, Respond));
         }
         
         [Fact]
@@ -49,13 +50,6 @@ namespace test
                 new SeatId("A", 3),
                 new SeatId("A", 4),
             }));
-        }
-
-        private void Query(AvailableSeats query)
-        {
-            var handler = new AvailableSeatsQueryHandler(_readModel, Respond);
-
-            handler.Handle(query);
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace app.domain.screening.queries
 {
-    public class AvailableSeatsQueryHandler
+    public class AvailableSeatsQueryHandler: Handler<AvailableSeats>
     {
         private readonly AvailableSeatsReadModel _readModel;
         private readonly Action<object> _respond;

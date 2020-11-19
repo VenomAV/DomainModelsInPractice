@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using app.domain;
 using app.infrastructure;
@@ -10,7 +11,8 @@ namespace test
         private readonly List<object> _receivedResponses = new List<object>();
         private readonly List<Event> _publishedEvent = new List<Event>();
         private readonly List<ReadModel> _readModels = new List<ReadModel>();
-        
+        private readonly Dictionary<Type, object> _handlers = new Dictionary<Type, object>();
+
         protected InMemoryEventStore EventStore { get; } = new InMemoryEventStore(new Event[0]);
 
         protected void Given(params Event[] events)
@@ -45,5 +47,15 @@ namespace test
         }
 
         protected void RegisterReadModel(ReadModel readModel) => _readModels.Add(readModel);
+
+        protected void Register<TMsg>(Handler<TMsg> handler) => _handlers[typeof(TMsg)] = handler;
+
+        protected void Query<TMsg>(TMsg query) => CallHandlerFor(query);
+
+        private void CallHandlerFor<TMsg>(TMsg message)
+        {
+            if (_handlers.ContainsKey(typeof(TMsg))) 
+                ((Handler<TMsg>) _handlers[typeof(TMsg)]).Handle(message);
+        }
     }
 }
