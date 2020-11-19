@@ -57,7 +57,7 @@ namespace test
             var query = new FakeQuery("query");
             Register(handler);
 
-            Query(query);
+            WhenQuery(query);
 
             Assert.Equal(new[] {query}, handler.ReceivedMessages);
         }

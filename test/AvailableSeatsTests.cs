@@ -28,7 +28,7 @@ namespace test
                     SeatA1),
                 SeatsReservationRequestedTooLate(Screening1, Guid.NewGuid()));
 
-            Query(AvailableSeats(Screening1));
+            WhenQuery(AvailableSeats(Screening1));
 
             ThenExpectResponses(AvailableSeatsResponse(Screening1, SeatA2, SeatA3, SeatA4));
         }
