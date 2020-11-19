@@ -45,7 +45,7 @@ namespace test
         protected void Register<TMsg>(Handler<TMsg> handler) => _handlers[typeof(TMsg)] = handler;
 
         protected void WhenQuery<TMsg>(TMsg query) => CallHandlerFor(query);
-        protected void When<TMsg>(TMsg query) => CallHandlerFor(query);
+        protected void When<TMsg>(TMsg command) => CallHandlerFor(command);
 
         private void CallHandlerFor<TMsg>(TMsg message)
         {
