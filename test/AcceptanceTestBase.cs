@@ -22,9 +22,17 @@ namespace test
                 NotifyReadModels(@event);
         }
 
-        protected void Then(params Event[] events) => Assert.Equal(events, _publishedEvent);
+        protected void Then(params Event[] events)
+        {
+            Assert.Equal(events, _publishedEvent);
+            _publishedEvent.Clear();
+        }
 
-        protected void ThenExpectResponse(object response) => Assert.Equal(response, _receivedResponse);
+        protected void ThenExpectResponse(object response)
+        {
+            Assert.Equal(response, _receivedResponse);
+            _receivedResponse = null;
+        }
 
         protected void Respond(object response) => _receivedResponse = response;
 
