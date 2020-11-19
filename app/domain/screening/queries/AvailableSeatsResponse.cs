@@ -5,16 +5,18 @@ namespace app.domain.screening.queries
 {
     public class AvailableSeatsResponse
     {
+        public Guid ScreeningId { get; }
         public SeatId[] Seats { get; }
 
-        public AvailableSeatsResponse(SeatId[] seats)
+        public AvailableSeatsResponse(Guid screeningId, SeatId[] seats)
         {
+            ScreeningId = screeningId;
             Seats = seats;
         }
 
         protected bool Equals(AvailableSeatsResponse other)
         {
-            return Seats.SequenceEqual(other.Seats);
+            return ScreeningId == other.ScreeningId && Seats.SequenceEqual(other.Seats);
         }
 
         public override bool Equals(object obj)
@@ -27,7 +29,7 @@ namespace app.domain.screening.queries
 
         public override int GetHashCode()
         {
-            return Seats.Select(x => x.GetHashCode()).Aggregate(HashCode.Combine);
+            return HashCode.Combine(ScreeningId, Seats.Select(x => x.GetHashCode()).Aggregate(HashCode.Combine));
         }
     }
 }

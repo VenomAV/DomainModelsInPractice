@@ -16,7 +16,7 @@ namespace app.domain.screening.queries
         public void Handle(AvailableSeats query)
         {
             var seats = _readModel.SeatsFor(query.ScreeningId);
-            _respond(new AvailableSeatsResponse(seats));
+            _respond(new AvailableSeatsResponse(query.ScreeningId, seats));
         }
     }
 }

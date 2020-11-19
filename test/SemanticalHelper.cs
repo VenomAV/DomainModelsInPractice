@@ -23,8 +23,8 @@ namespace test
 
         public static AvailableSeats AvailableSeats(Guid screeningId) => new AvailableSeats(screeningId);
 
-        public static AvailableSeatsResponse AvailableSeatsResponse(params SeatId[] seats) =>
-            new AvailableSeatsResponse(seats);
+        public static AvailableSeatsResponse AvailableSeatsResponse(Guid screeningId, params SeatId[] seats) =>
+            new AvailableSeatsResponse(screeningId, seats);
 
         public static SeatsReservationRequestedTooLate SeatsReservationRequestedTooLate(
             Guid screeningId,
