@@ -8,6 +8,14 @@ namespace test
 {
     public class AvailableSeatsTests : AcceptanceTestBase
     {
+        private readonly AvailableSeatsReadModel _readModel;
+
+        public AvailableSeatsTests()
+        {
+            _readModel = new AvailableSeatsReadModel(EventStore);
+            RegisterReadModel(_readModel);
+        }
+        
         [Fact]
         public void AllSeatsAvailable()
         {
@@ -45,8 +53,7 @@ namespace test
 
         private void Query(AvailableSeats query)
         {
-            var readModel = new AvailableSeatsReadModel(EventStore);
-            var handler = new AvailableSeatsQueryHandler(readModel, Respond);
+            var handler = new AvailableSeatsQueryHandler(_readModel, Respond);
 
             handler.Handle(query);
         }
