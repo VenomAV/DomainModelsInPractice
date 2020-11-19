@@ -36,6 +36,7 @@ namespace test
         public static Guid Screening1 { get; } = Guid.NewGuid();
         public static Guid Marco { get; } = Guid.NewGuid();
         public static Guid Andrea { get; } = Guid.NewGuid();
+        public static Guid Xin { get; } = Guid.NewGuid();
         public static DateTime FarEnoughStartTime => DateTime.Now.AddDays(1);
         public static DateTime TooNearStartTime => DateTime.Now.AddMinutes(10);
         

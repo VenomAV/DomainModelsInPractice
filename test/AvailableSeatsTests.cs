@@ -30,7 +30,7 @@ namespace test
 
             WhenQuery(AvailableSeats(Screening1));
 
-            ThenExpectResponses(AvailableSeatsResponse(Screening1, SeatA2, SeatA3, SeatA4));
+            ThenExpectResponse(AvailableSeatsResponse(Screening1, SeatA2, SeatA3, SeatA4));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace test
 {
     public abstract class AcceptanceTestBase
     {
-        private readonly List<object> _receivedResponses = new List<object>();
+        private object _receivedResponse;
         private readonly List<Event> _publishedEvent = new List<Event>();
         private readonly List<ReadModel> _readModels = new List<ReadModel>();
         private readonly Dictionary<Type, object> _handlers = new Dictionary<Type, object>();
@@ -24,9 +24,9 @@ namespace test
 
         protected void Then(params Event[] events) => Assert.Equal(events, _publishedEvent);
 
-        protected void ThenExpectResponses(params object[] responses) => Assert.Equal(responses, _receivedResponses);
+        protected void ThenExpectResponse(object response) => Assert.Equal(response, _receivedResponse);
 
-        protected void Respond(object response) => _receivedResponses.Add(response);
+        protected void Respond(object response) => _receivedResponse = response;
 
         protected void Published(Event @event)
         {
