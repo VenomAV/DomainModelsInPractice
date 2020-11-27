@@ -1,4 +1,5 @@
 using System;
+using app.domain;
 using app.domain.screening;
 using app.domain.screening.commands;
 using app.domain.screening.events;
@@ -22,9 +23,17 @@ namespace test
             new ReserveSeats(screeningId, customerId, seats);
 
         public static AvailableSeats AvailableSeats(Guid screeningId) => new AvailableSeats(screeningId);
+        
+        public static CustomerReservations CustomerReservations(Guid customerId) => new CustomerReservations(customerId);
 
         public static AvailableSeatsResponse AvailableSeatsResponse(Guid screeningId, params SeatId[] seats) =>
             new AvailableSeatsResponse(screeningId, seats);
+
+        public static CustomerReservationsResponse CustomerReservationsResponse(Guid customerId,
+            params Reservation[] reservations) => new CustomerReservationsResponse(customerId, reservations);
+
+        public static Reservation Reservation(Guid screeningId, params SeatId[] seats) =>
+            new Reservation(screeningId, seats);
 
         public static SeatsReservationRequestedTooLate SeatsReservationRequestedTooLate(
             Guid screeningId,
